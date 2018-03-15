@@ -1,0 +1,119 @@
+# Running on vgnd018
+# Started at Wed Mar 7 12:18:53 CET 2018
+# steps/nnet/train.sh --cmvn-opts "--norm-means=true --norm-vars=true" --splice 5 --labels scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/ali-post/combined.scp --num-tgt 62 --proto-opts --block-softmax-dims=2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2 --train-tool "nnet-train-frmshuff --objective-function=multitask,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0" --learn-rate 0.004 data/EN_FR_GE/train_tr95 data/EN_FR_GE/train_cv05 lang-dummy ali-dummy ali-dummy exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced 
+steps/nnet/train.sh --cmvn-opts --norm-means=true --norm-vars=true --splice 5 --labels scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/ali-post/combined.scp --num-tgt 62 --proto-opts --block-softmax-dims=2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2 --train-tool nnet-train-frmshuff --objective-function=multitask,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0 --learn-rate 0.004 data/EN_FR_GE/train_tr95 data/EN_FR_GE/train_cv05 lang-dummy ali-dummy ali-dummy exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced
+
+# INFO
+steps/nnet/train.sh : Training Neural Network
+	 dir       : exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced 
+	 Train-set : data/EN_FR_GE/train_tr95 110265, ali-dummy 
+	 CV-set    : data/EN_FR_GE/train_cv05 6167 ali-dummy 
+
+### IS CUDA GPU AVAILABLE? 'vgnd018' ###
+WARNING (SelectGpuId():cu-device.cc:182) Suggestion: use 'nvidia-smi -c 3' to set compute exclusive mode
+LOG (SelectGpuIdAuto():cu-device.cc:300) Selecting from 1 GPUs
+LOG (SelectGpuIdAuto():cu-device.cc:315) cudaSetDevice(0): Tesla K80	free:11376M, used:63M, total:11439M, free/total:0.99446
+LOG (SelectGpuIdAuto():cu-device.cc:364) Trying to select device: 0 (automatically), mem_ratio: 0.99446
+LOG (SelectGpuIdAuto():cu-device.cc:383) Success selecting device 0 free mem ratio: 0.99446
+LOG (FinalizeActiveGpu():cu-device.cc:225) The active GPU is [0]: Tesla K80	free:11359M, used:80M, total:11439M, free/total:0.992974 version 3.7
+### HURRAY, WE GOT A CUDA GPU FOR COMPUTATION!!! ###
+
+# PREPARING ALIGNMENTS
+Using targets 'scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/ali-post/combined.scp' (by force)
+
+# PREPARING FEATURES
+# + 'apply-cmvn' with '--norm-means=true --norm-vars=true' using statistics : data/EN_FR_GE/train_tr95/cmvn.scp, data/EN_FR_GE/train_cv05/cmvn.scp
+feat-to-dim 'ark:copy-feats scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/train.scp ark:- | apply-cmvn --norm-means=true --norm-vars=true --utt2spk=ark:data/EN_FR_GE/train_tr95/utt2spk scp:data/EN_FR_GE/train_tr95/cmvn.scp ark:- ark:- |' - 
+copy-feats scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/train.scp ark:- 
+apply-cmvn --norm-means=true --norm-vars=true --utt2spk=ark:data/EN_FR_GE/train_tr95/utt2spk scp:data/EN_FR_GE/train_tr95/cmvn.scp ark:- ark:- 
+WARNING (feat-to-dim:Close():kaldi-io.cc:501) Pipe copy-feats scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/train.scp ark:- | apply-cmvn --norm-means=true --norm-vars=true --utt2spk=ark:data/EN_FR_GE/train_tr95/utt2spk scp:data/EN_FR_GE/train_tr95/cmvn.scp ark:- ark:- | had nonzero return status 36096
+# feature dim : 40 (input of 'feature_transform')
+# + default 'feature_transform_proto' with splice +/-5 frames,
+nnet-initialize --binary=false exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/splice5.proto exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/tr_splice5.nnet 
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <Splice> <InputDim> 40 <OutputDim> 440 <BuildVector> -5:5 </BuildVector>
+LOG (nnet-initialize:main():nnet-initialize.cc:63) Written initialized model to exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/tr_splice5.nnet
+# feature type : plain
+# compute normalization stats from 10k sentences
+compute-cmvn-stats ark:- exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/cmvn-g.stats 
+nnet-forward --print-args=true --use-gpu=yes exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/tr_splice5.nnet 'ark:copy-feats scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/train.scp.10k ark:- | apply-cmvn --norm-means=true --norm-vars=true --utt2spk=ark:data/EN_FR_GE/train_tr95/utt2spk scp:data/EN_FR_GE/train_tr95/cmvn.scp ark:- ark:- |' ark:- 
+WARNING (nnet-forward:SelectGpuId():cu-device.cc:182) Suggestion: use 'nvidia-smi -c 3' to set compute exclusive mode
+LOG (nnet-forward:SelectGpuIdAuto():cu-device.cc:300) Selecting from 1 GPUs
+LOG (nnet-forward:SelectGpuIdAuto():cu-device.cc:315) cudaSetDevice(0): Tesla K80	free:11376M, used:63M, total:11439M, free/total:0.99446
+LOG (nnet-forward:SelectGpuIdAuto():cu-device.cc:364) Trying to select device: 0 (automatically), mem_ratio: 0.99446
+LOG (nnet-forward:SelectGpuIdAuto():cu-device.cc:383) Success selecting device 0 free mem ratio: 0.99446
+LOG (nnet-forward:FinalizeActiveGpu():cu-device.cc:225) The active GPU is [0]: Tesla K80	free:11359M, used:80M, total:11439M, free/total:0.992974 version 3.7
+copy-feats scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/train.scp.10k ark:- 
+apply-cmvn --norm-means=true --norm-vars=true --utt2spk=ark:data/EN_FR_GE/train_tr95/utt2spk scp:data/EN_FR_GE/train_tr95/cmvn.scp ark:- ark:- 
+LOG (copy-feats:main():copy-feats.cc:120) Copied 10000 feature matrices.
+LOG (apply-cmvn:main():apply-cmvn.cc:143) Applied cepstral mean and variance normalization to 10000 utterances, errors on 0
+LOG (nnet-forward:main():nnet-forward.cc:192) Done 10000 files in 2.56131min, (fps 68839.2)
+LOG (compute-cmvn-stats:main():compute-cmvn-stats.cc:168) Wrote global CMVN stats to exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/cmvn-g.stats
+LOG (compute-cmvn-stats:main():compute-cmvn-stats.cc:171) Done accumulating CMVN stats for 10000 utterances; 0 had errors.
+# + normalization of NN-input at 'exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/tr_splice5_cmvn-g.nnet'
+nnet-concat --binary=false exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/tr_splice5.nnet 'cmvn-to-nnet --std-dev=1.0 exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/cmvn-g.stats -|' exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/tr_splice5_cmvn-g.nnet 
+LOG (nnet-concat:main():nnet-concat.cc:53) Reading exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/tr_splice5.nnet
+LOG (nnet-concat:main():nnet-concat.cc:65) Concatenating cmvn-to-nnet --std-dev=1.0 exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/cmvn-g.stats -|
+cmvn-to-nnet --std-dev=1.0 exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/cmvn-g.stats - 
+LOG (cmvn-to-nnet:main():cmvn-to-nnet.cc:114) Written cmvn in 'nnet1' model to: -
+LOG (nnet-concat:main():nnet-concat.cc:82) Written model to exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/tr_splice5_cmvn-g.nnet
+
+### Showing the final 'feature_transform':
+nnet-info exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/tr_splice5_cmvn-g.nnet 
+LOG (nnet-info:main():nnet-info.cc:57) Printed info about exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/tr_splice5_cmvn-g.nnet
+num-components 3
+input-dim 40
+output-dim 440
+number-of-parameters 0.00088 millions
+component 1 : <Splice>, input-dim 40, output-dim 440, 
+  frame_offsets [ -5 -4 -3 -2 -1 0 1 2 3 4 5 ]
+component 2 : <AddShift>, input-dim 440, output-dim 440, 
+  shift_data ( min 0.000174946, max 0.00409682, mean 0.00175443, stddev 0.000798527, skewness 0.355474, kurtosis -0.454081 ) , lr-coef 0
+component 3 : <Rescale>, input-dim 440, output-dim 440, 
+  scale_data ( min 0.99562, max 1.00187, mean 0.999888, stddev 0.000883083, skewness -0.584736, kurtosis 1.14325 ) , lr-coef 0
+###
+
+# NN-INITIALIZATION
+# getting input/output dims :
+feat-to-dim 'ark:copy-feats scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/train.scp ark:- | apply-cmvn --norm-means=true --norm-vars=true --utt2spk=ark:data/EN_FR_GE/train_tr95/utt2spk scp:data/EN_FR_GE/train_tr95/cmvn.scp ark:- ark:- | nnet-forward "exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/final.feature_transform" ark:- ark:- |' - 
+copy-feats scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/train.scp ark:- 
+nnet-forward exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/final.feature_transform ark:- ark:- 
+LOG (nnet-forward:SelectGpuId():cu-device.cc:110) Manually selected to compute on CPU.
+apply-cmvn --norm-means=true --norm-vars=true --utt2spk=ark:data/EN_FR_GE/train_tr95/utt2spk scp:data/EN_FR_GE/train_tr95/cmvn.scp ark:- ark:- 
+WARNING (feat-to-dim:Close():kaldi-io.cc:501) Pipe copy-feats scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/train.scp ark:- | apply-cmvn --norm-means=true --norm-vars=true --utt2spk=ark:data/EN_FR_GE/train_tr95/utt2spk scp:data/EN_FR_GE/train_tr95/cmvn.scp ark:- ark:- | nnet-forward "exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/final.feature_transform" ark:- ark:- | had nonzero return status 36096
+# genrating network prototype exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet.proto
+['utils/nnet/make_nnet_proto.py', '--block-softmax-dims=2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2', '440', '62', '4', '1024']
+# initializing the NN 'exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet.proto' -> 'exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet.init'
+nnet-initialize --seed=777 exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet.proto exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet.init 
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <AffineTransform> <InputDim> 440 <OutputDim> 1024 <BiasMean> -2.000000 <BiasRange> 4.000000 <ParamStddev> 0.037344 <MaxNorm> 0.000000 
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <Sigmoid> <InputDim> 1024 <OutputDim> 1024 
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <AffineTransform> <InputDim> 1024 <OutputDim> 1024 <BiasMean> -2.000000 <BiasRange> 4.000000 <ParamStddev> 0.109375 <MaxNorm> 0.000000 
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <Sigmoid> <InputDim> 1024 <OutputDim> 1024 
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <AffineTransform> <InputDim> 1024 <OutputDim> 1024 <BiasMean> -2.000000 <BiasRange> 4.000000 <ParamStddev> 0.109375 <MaxNorm> 0.000000 
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <Sigmoid> <InputDim> 1024 <OutputDim> 1024 
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <AffineTransform> <InputDim> 1024 <OutputDim> 1024 <BiasMean> -2.000000 <BiasRange> 4.000000 <ParamStddev> 0.109375 <MaxNorm> 0.000000 
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <Sigmoid> <InputDim> 1024 <OutputDim> 1024 
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <AffineTransform> <InputDim> 1024 <OutputDim> 62 <BiasMean> 0.000000 <BiasRange> 0.000000 <ParamStddev> 0.150199 <LearnRateCoef> 1.000000 <BiasLearnRateCoef> 0.100000
+VLOG[1] (nnet-initialize:Init():nnet-nnet.cc:314) <BlockSoftmax> <InputDim> 62 <OutputDim> 62 <BlockDims> 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+LOG (nnet-initialize:main():nnet-initialize.cc:63) Written initialized model to exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet.init
+
+# RUNNING THE NN-TRAINING SCHEDULER
+steps/nnet/train_scheduler.sh --train-tool nnet-train-frmshuff --objective-function=multitask,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0,xent,2,1.0 --feature-transform exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/final.feature_transform --learn-rate 0.004 exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet.init ark:copy-feats scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/train.scp ark:- | apply-cmvn --norm-means=true --norm-vars=true --utt2spk=ark:data/EN_FR_GE/train_tr95/utt2spk scp:data/EN_FR_GE/train_tr95/cmvn.scp ark:- ark:- | ark:copy-feats scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/cv.scp ark:- | apply-cmvn --norm-means=true --norm-vars=true --utt2spk=ark:data/EN_FR_GE/train_cv05/utt2spk scp:data/EN_FR_GE/train_cv05/cmvn.scp ark:- ark:- | scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/ali-post/combined.scp scp:exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/ali-post/combined.scp exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced
+CROSSVAL PRERUN AVG.LOSS 3.0736 (MultiTaskLoss),
+ITERATION 01: skipping... exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet/nnet_iter01_learnrate0.004_tr3.6886_cv3.9513
+ITERATION 02: skipping... exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet/nnet_iter02_learnrate0.004_tr3.3091_cv3.7416
+ITERATION 03: skipping... exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet/nnet_iter03_learnrate0.004_tr3.2306_cv3.6431
+ITERATION 04: skipping... exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet/nnet_iter04_learnrate0.004_tr3.1876_cv3.5790
+ITERATION 05: skipping... exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet/nnet_iter05_learnrate0.004_tr3.1590_cv3.5525
+ITERATION 06: skipping... exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet/nnet_iter06_learnrate0.002_tr3.0358_cv3.2859
+ITERATION 07: skipping... exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet/nnet_iter07_learnrate0.001_tr2.9445_cv3.1618
+ITERATION 08: skipping... exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet/nnet_iter08_learnrate0.0005_tr2.8896_cv3.1031
+ITERATION 09: skipping... exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/nnet/nnet_iter09_learnrate0.00025_tr2.8560_cv3.0736
+ITERATION 10: TRAIN AVG.LOSS 2.8371, (lrate0.000125), CROSSVAL AVG.LOSS 3.0605, nnet accepted (nnet_iter10_learnrate0.000125_tr2.8371_cv3.0605)
+ITERATION 11: TRAIN AVG.LOSS 2.8278, (lrate6.25e-05), CROSSVAL AVG.LOSS 3.0537, nnet accepted (nnet_iter11_learnrate6.25e-05_tr2.8278_cv3.0537)
+ITERATION 12: TRAIN AVG.LOSS 2.8229, (lrate3.125e-05), CROSSVAL AVG.LOSS 3.0505, nnet accepted (nnet_iter12_learnrate3.125e-05_tr2.8229_cv3.0505)
+ITERATION 13: TRAIN AVG.LOSS 2.8200, (lrate1.5625e-05), CROSSVAL AVG.LOSS 3.0491, nnet accepted (nnet_iter13_learnrate1.5625e-05_tr2.8200_cv3.0491)
+finished, too small rel. improvement .0004687756
+steps/nnet/train_scheduler.sh: Succeeded training the Neural Network : 'exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced/final.nnet'
+steps/nnet/train.sh: Successfuly finished. 'exp/dnn4e-fbank_phonological_multitask_fix_GE_u_voiced'
+# Accounting: time=168745 threads=1
+# Finished at Fri Mar 9 11:11:18 CET 2018 with status 0
